@@ -9,8 +9,11 @@ public class BlockParserTest {
 
     @Test
     public void testOnCorrectData() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("Увязка_651_8707_ВСМР.depth.las"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("testFile.las"))) {
             BlockParser blockParser = new BlockParser(reader);
+            blockParser.parse();
+            System.out.println(blockParser.getVersionBlock());
+            System.out.println(blockParser.getCurveInfoBlock());
         } catch (IOException e) {
             e.printStackTrace();
         }
