@@ -32,4 +32,8 @@ public class Curve {
     public String getDescription() {
         return description;
     }
+
+    public void addValue(Float value) {
+        data.add(value);
+    }
 }

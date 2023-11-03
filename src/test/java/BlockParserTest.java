@@ -14,6 +14,7 @@ public class BlockParserTest {
             blockParser.parse();
             System.out.println(blockParser.getVersionBlock());
             System.out.println(blockParser.getCurveInfoBlock());
+            System.out.println(reader.readLine());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -10,6 +10,12 @@ public class BlockParser {
 
     private String versionBlock = "";
     private String curveInfoBlock = "";
+
+    public Float getNullValue() {
+        return nullValue;
+    }
+
+    private Float nullValue;
     private final BufferedReader reader;
     public BlockParser(BufferedReader reader) {
         this.reader = reader;
@@ -18,10 +24,11 @@ public class BlockParser {
     public void parse() {
         String str;
         char flag = 's';
-        Pattern pattern = Pattern.compile("~(\\S)");
+        Pattern blockStartPattern = Pattern.compile("~(\\S)");
+        Pattern nullValuePattern = Pattern.compile("NULL\\s*\\.\\s+(\\S*):");
         try {
             while ((str = reader.readLine()) != null) {
-                Matcher matcher = pattern.matcher(str);
+                Matcher matcher = blockStartPattern.matcher(str);
                 if (matcher.find()) {
                     if (matcher.group(1).equals("V")) {
                         flag = 'v';
@@ -29,13 +36,21 @@ public class BlockParser {
                         flag = 'c';
                     } else if (matcher.group(1).equals("A")) {
                         break;
-                    } else {
+                    } else if (matcher.group(1).equals("W")) {
+                        flag = 'w';
+                    }
+                    else {
                         flag = 's';
                     }
                 } else if (flag == 'v') {
                     versionBlock += str + "\n";
                 } else if (flag == 'c') {
                     curveInfoBlock += str + "\n";
+                } else if (flag == 'w') {
+                    Matcher nullValueMatcher = nullValuePattern.matcher(str);
+                    if (nullValueMatcher.find()) {
+                        nullValue = Float.parseFloat(nullValueMatcher.group(1));
+                    }
                 }
             }
         } catch (IOException e) {

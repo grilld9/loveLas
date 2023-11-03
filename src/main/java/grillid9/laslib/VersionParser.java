@@ -12,18 +12,19 @@ public class VersionParser {
 
     public VersionParser(String versionBlock) {
         this.versionBlock = versionBlock;
-        try {
-            parseVersion();
-            parseWrap();
-        } catch (NoSuchElementException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+
     }
 
     /**
      * Parse .las file version from ~VER topic
      * @throws NoSuchElementException - If there is no version information in the file
      */
+
+    public void parse() {
+        parseVersion();
+        parseWrap();
+    }
+
     private void parseVersion() throws NoSuchElementException {
         Pattern pattern = Pattern.compile("VERS\\s*\\.\\s*(\\d*\\.\\d*)");
         Matcher matcher = pattern.matcher(versionBlock);

@@ -11,12 +11,11 @@ public class CurveInfoParserTest {
         String input = "DEPT     .M                                 :DEPT\n" +
                 "SPEE     .M/H                               :Скорость, м/час - 12.326 м.\n";
         String[] dataRows = input.split("\n");
-        System.out.println(dataRows[0] + " " + dataRows[1]);
-        Pattern pattern222 = Pattern.compile("(\\S+)\\s*\\.(\\S+)\\s*:(.*)\\n");
-        Matcher matcher222 = pattern222.matcher(input);
+        Pattern pattern222 = Pattern.compile("(\\S+)\\s*\\.(\\S+)\\s*:(.*)");
+        Matcher matcher222 = pattern222.matcher(dataRows[0]);
         System.out.println(matcher222.groupCount());
         System.out.println(matcher222.find());
-        System.out.println(matcher222.start());
         System.out.println(matcher222.group(3));
+
     }
 }
