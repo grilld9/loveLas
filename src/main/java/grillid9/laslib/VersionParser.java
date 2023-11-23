@@ -1,5 +1,8 @@
 package grillid9.laslib;
 
+import grillid9.laslib.exceptions.ReadWrapException;
+import grillid9.laslib.exceptions.VersionException;
+
 import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +34,7 @@ public class VersionParser {
         if (matcher.find() && matcher.groupCount() > 0) {
             version = matcher.group(1);
         } else {
-            throw new NoSuchElementException("Cannot find version information");
+            throw new VersionException("Cannot read version information");
         }
 
     }
@@ -46,7 +49,7 @@ public class VersionParser {
         if (matcher.find() && matcher.groupCount() > 0) {
             wrap = ("YES").equals(matcher.group(1));
         } else {
-            throw new NoSuchElementException("Cannot find wrap information");
+            throw new ReadWrapException("Cannot read wrap information");
         }
     }
 

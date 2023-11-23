@@ -1,9 +1,10 @@
 package grillid9.laslib;
 
+import grillid9.laslib.exceptions.LogsReadingException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class LogParser {
 
@@ -17,12 +18,14 @@ public class LogParser {
     }
     public void parse() {
         String str;
+        int currStringNumber = 0;
         int curvesCount = curves.size();
         try {
             while ((str = reader.readLine()) != null) {
                 String[] values = str.split("\\s+");
                 if (values.length != curvesCount) {
-                    throw new NoSuchElementException("Can't resolve curve value");
+                    throw new LogsReadingException("Can't resolve curve value at string "
+                            + currStringNumber);
                 }
                 for (int i = 0; i < curvesCount; i++) {
                     float value = Float.parseFloat(values[i]);
@@ -34,7 +37,9 @@ public class LogParser {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new LogsReadingException(e.getMessage());
+        } catch (NumberFormatException | NullPointerException e) {
+            throw new LogsReadingException("Can't parse float curve number");
         }
     }
 }

@@ -1,10 +1,15 @@
 package grillid9.laslib;
 
+import grillid9.laslib.exceptions.LogsReadingException;
+import grillid9.laslib.exceptions.ReadWrapException;
+import grillid9.laslib.exceptions.VersionException;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class LasReader {
 
@@ -13,6 +18,9 @@ public class LasReader {
     }
 
     public String getVersion() {
+        if (version.isEmpty()) {
+            throw new NoSuchElementException();
+        }
         return version;
     }
 
@@ -28,7 +36,7 @@ public class LasReader {
         this.lasFile = lasFile;
     }
 
-    public void read() {
+    public void read() throws IOException, VersionException, ReadWrapException, LogsReadingException {
         try (BufferedReader reader = new BufferedReader(new FileReader(lasFile))) {
             BlockParser blockParser = new BlockParser(reader);
             blockParser.parse();
@@ -36,14 +44,20 @@ public class LasReader {
             VersionParser versionParser = new VersionParser(blockParser.getVersionBlock());
             versionParser.parse();
             CurveInfoParser curveInfoParser = new CurveInfoParser(blockParser.getCurveInfoBlock(),
-                curves);
+                    curves);
             curveInfoParser.parse();
             version = versionParser.getVersion();
             isWrap = versionParser.isWrap();
             LogParser logParser = new LogParser(reader, curves, nullValue);
             logParser.parse();
+        } catch (VersionException v) {
+            throw new VersionException(v.getMessage());
+        } catch (ReadWrapException w) {
+            throw new ReadWrapException(w.getMessage());
         } catch (IOException e) {
-            throw  new RuntimeException("Cant't open file");
+            throw new IOException(e.getMessage());
+        } catch (LogsReadingException l) {
+            throw new LogsReadingException(l.getMessage());
         }
     }
 }
