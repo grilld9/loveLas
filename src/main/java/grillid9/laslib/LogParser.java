@@ -26,8 +26,8 @@ public class LogParser {
                 if (str.charAt(0) == '#') continue;
                 String[] values = str.split("\\s+");
                 if (values.length != curvesCount) {
-                    throw new LogsReadingException("Can't resolve curve value at string "
-                            + currStringNumber);
+                    throw new LogsReadingException("Количество кривых " + curvesCount +
+                          " не соответствует количеству столбцов "  + values.length);
                 }
                 for (int i = 0; i < curvesCount; i++) {
                     float value = Float.parseFloat(values[i]);
