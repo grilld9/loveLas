@@ -22,6 +22,8 @@ public class LogParser {
         int curvesCount = curves.size();
         try {
             while ((str = reader.readLine()) != null) {
+                str = str.trim();
+                if (str.charAt(0) == '#') continue;
                 String[] values = str.split("\\s+");
                 if (values.length != curvesCount) {
                     throw new LogsReadingException("Can't resolve curve value at string "
