@@ -25,7 +25,7 @@ public class BlockParser {
         String str;
         char flag = 's';
         Pattern blockStartPattern = Pattern.compile("~(\\S)");
-        Pattern nullValuePattern = Pattern.compile("NULL\\s*\\.\\s+(\\S*):");
+        Pattern nullValuePattern = Pattern.compile("NULL\\s*\\.\\w*\\s+(\\S*):");
         try {
             while ((str = reader.readLine()) != null) {
                 Matcher matcher = blockStartPattern.matcher(str);
